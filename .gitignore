@@ -1,0 +1,16 @@
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Base de datos local y datos dinámicos
+*.db
+*.json
+!requirements.txt
+
+# Caché de Python
+__pycache__/
+*.pyc
+
+# Variables de entorno secretas
+.env

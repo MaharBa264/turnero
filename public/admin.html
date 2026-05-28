@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consola de Administración - Carnicería El Puntano</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <span class="logo-icon" id="admin-logo-placeholder">🥩</span>
+      <img id="admin-logo-img" style="display: none; height: 50px; max-width: 150px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(255,255,255,0.1)); margin-right: 10px;" />
+      <h1 id="admin-title-text">Consola El Puntano</h1>
+    </div>
+    <p>Control de Turnos & Administración</p>
+  </header>
+
+  <main class="glass-card" style="max-width: 600px;">
+    <!-- View A: Login Form -->
+    <div id="view-login" class="animation-fade">
+      <h2 style="font-family: var(--font-serif); margin-bottom: 1.5rem; font-size: 1.6rem;">Ingreso Personal</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Usuario</label>
+          <input type="text" id="username" placeholder="Ingrese su usuario" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" placeholder="Ingrese su contraseña" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Iniciar Sesión</button>
+      </form>
+      <div id="login-error" style="color: #ff5555; margin-top: 1rem; font-size: 0.9rem; font-weight: 600; display: none;"></div>
+    </div>
+
+    <!-- View B: Admin Console (Hidden until login) -->
+    <div id="view-dashboard" class="animation-fade" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--card-border); padding-bottom: 1rem;">
+        <span style="font-weight: 600; color: var(--accent-gold);" id="user-greeting">Hola, Carnicero!</span>
+        <button class="link-btn" id="btn-logout">Cerrar Sesión</button>
+      </div>
+
+      <!-- Live state boxes -->
+      <div class="queue-status-grid">
+        <div class="status-box">
+          <span class="status-label">Turno Actual</span>
+          <span class="status-number active" id="admin-current-serving">0</span>
+        </div>
+        <div class="status-box">
+          <span class="status-label">Último Emitido</span>
+          <span class="status-number" id="admin-last-number">0</span>
+        </div>
+      </div>
+
+      <!-- Control Buttons -->
+      <div class="button-grid">
+        <button class="btn btn-gold" id="btn-call-next">📢 LLAMAR SIGUIENTE</button>
+        <button class="btn btn-secondary" id="btn-call-again">🔄 LLAMAR NUEVAMENTE</button>
+      </div>
+
+      <!-- Admin Only Configurations (Visible only to Admin role) -->
+      <div id="admin-only-panel" class="user-mgmt-panel" style="display: none;">
+        <!-- 1. Branding Config Form -->
+        <h3 style="font-family: var(--font-serif); margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-gold); font-size: 1.4rem; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem;">Configuración de Branding</h3>
+        <form id="branding-config-form" style="background: rgba(0,0,0,0.2); padding: 1.25rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.03);">
+          <div class="form-group">
+            <label for="brand-name">Nombre Comercial</label>
+            <input type="text" id="brand-name" required>
+          </div>
+          <div class="form-group">
+            <label for="brand-logo">Logo URL</label>
+            <input type="text" id="brand-logo" placeholder="http://o-ruta-a-la-nube.png">
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-group">
+              <label for="color-primary">Color Primario</label>
+              <input type="color" id="color-primary" style="height: 45px; padding: 0.2rem; cursor: pointer;">
+            </div>
+            <div class="form-group">
+              <label for="color-secondary">Color Secundario</label>
+              <input type="color" id="color-secondary" style="height: 45px; padding: 0.2rem; cursor: pointer;">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-group">
+              <label for="color-bg">Color de Fondo</label>
+              <input type="color" id="color-bg" style="height: 45px; padding: 0.2rem; cursor: pointer;">
+            </div>
+            <div class="form-group">
+              <label for="color-text">Color de Texto</label>
+              <input type="color" id="color-text" style="height: 45px; padding: 0.2rem; cursor: pointer;">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-group">
+              <label for="alert-threshold">Anticipación Alerta (Turnos)</label>
+              <input type="number" id="alert-threshold" min="1" max="10" required>
+            </div>
+            <div class="form-group">
+              <label for="brand-ad-type">Tipo Publicidad</label>
+              <select id="brand-ad-type" style="width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--card-border); border-radius: 12px; padding: 0.6rem; font-family: var(--font-sans); color: var(--text-main); font-size: 0.9rem; height: 45px; outline: none;">
+                <option value="ninguna">Ninguna</option>
+                <option value="propia">Promos Propias</option>
+                <option value="google_ads">Google Ads</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="brand-ad-url">URL de Banner Publicitario</label>
+            <input type="text" id="brand-ad-url" placeholder="http://imagen-promocional.png">
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="padding: 0.75rem; font-size: 0.95rem;">Guardar Configuración</button>
+        </form>
+
+        <!-- 2. QR Code Code Downloader -->
+        <h3 style="font-family: var(--font-serif); margin-bottom: 1rem; color: var(--accent-gold); font-size: 1.4rem; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem;">Material del Local</h3>
+        <div style="background: rgba(0,0,0,0.2); padding: 1.25rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: space-between;">
+          <div style="text-align: left;">
+            <h4 style="font-size: 0.95rem; text-transform: uppercase; color: var(--text-main); margin-bottom: 0.25rem;">Código QR de Clientes</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Descarga el código QR para que los clientes lo escaneen y soliciten su turno.</p>
+          </div>
+          <button class="btn btn-secondary" id="btn-download-qr" style="width: auto; padding: 0.6rem 1.2rem; font-size: 0.9rem;">⬇️ Descargar QR</button>
+        </div>
+
+        <!-- 3. User CRUD Panel -->
+        <h3 style="font-family: var(--font-serif); margin-bottom: 1rem; color: var(--accent-gold); font-size: 1.4rem; border-bottom: 1px solid var(--card-border); padding-bottom: 0.5rem;">Gestión de Personal</h3>
+        
+        <!-- Add user trigger form -->
+        <form id="add-user-form" style="background: rgba(0,0,0,0.2); padding: 1.25rem; border-radius: 16px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.03);">
+          <h4 style="margin-bottom: 1rem; font-size: 0.95rem; text-transform: uppercase; color: var(--text-muted);">Crear Nuevo Usuario</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="new-username" style="font-size: 0.75rem;">Usuario</label>
+              <input type="text" id="new-username" required style="padding: 0.6rem; font-size: 0.9rem;">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="new-password" style="font-size: 0.75rem;">Contraseña</label>
+              <input type="password" id="new-password" required style="padding: 0.6rem; font-size: 0.9rem;">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="new-fullname" style="font-size: 0.75rem;">Nombre Completo</label>
+              <input type="text" id="new-fullname" required style="padding: 0.6rem; font-size: 0.9rem;">
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="new-role" style="font-size: 0.75rem;">Rol</label>
+              <select id="new-role" style="width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--card-border); border-radius: 12px; padding: 0.6rem; font-family: var(--font-sans); color: var(--text-main); font-size: 0.9rem; height: 38px; outline: none;">
+                <option value="vendedor">Vendedor / Carnicero</option>
+                <option value="admin">Administrador</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="padding: 0.75rem; font-size: 0.95rem;">Agregar Usuario</button>
+        </form>
+
+        <h4 style="margin-bottom: 0.5rem; font-size: 0.95rem; text-transform: uppercase; color: var(--text-muted);">Usuarios Registrados</h4>
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Usuario</th>
+              <th>Rol</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="user-table-body">
+            <!-- Populated dynamically -->
+          </tbody>
+        </table>
+
+        <!-- Reset Turn queue -->
+        <div style="margin-top: 2.5rem; border-top: 1px dashed var(--card-border); padding-top: 1.5rem;">
+          <h4 style="margin-bottom: 0.5rem; font-size: 0.95rem; text-transform: uppercase; color: #ff5555;">Zona de Peligro</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Esto reiniciará el contador de turnos de hoy a cero y vaciará la cola.</p>
+          <button class="btn btn-danger" id="btn-reset-queue" style="padding: 0.75rem; font-size: 0.95rem;">🗑️ Reiniciar Cola del Día</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="margin-top: 2rem; text-align: center; padding-bottom: 2rem;">
+    <a href="index.html" style="color: var(--accent-gold); text-decoration: none; font-size: 0.9rem;">← Volver al menú principal</a>
+  </footer>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

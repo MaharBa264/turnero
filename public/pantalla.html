@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pantalla de Espera - Smart TV</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* TV Screen overrides */
+    body {
+      background: radial-gradient(circle at 50% 50%, #3a1a1a 0%, var(--bg-primary) 100%);
+      padding: 2rem;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    
+    .tv-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 1rem;
+      margin-bottom: 0;
+      max-width: 100%;
+    }
+
+    .tv-time {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--accent-gold);
+    }
+
+    /* Autoplay overlay warning */
+    .audio-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(18, 14, 14, 0.95);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .audio-btn {
+      background: linear-gradient(135deg, var(--accent-gold) 0%, #c48c3f 100%);
+      color: #120e0e;
+      font-size: 1.5rem;
+      font-weight: 700;
+      padding: 1.5rem 3rem;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 30px var(--accent-gold-glow);
+      transition: var(--transition-smooth);
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <!-- Overlay to enable Audio Context / Speech Synthesis -->
+  <div id="audio-activation-overlay" class="audio-overlay">
+    <span style="font-size: 5rem;">🔊</span>
+    <h2 style="font-family: var(--font-serif); font-size: 2rem;">Activar Sonido de Turnos</h2>
+    <p style="color: var(--text-muted); max-width: 500px; text-align: center; line-height: 1.5;">
+      Para que la pantalla pueda anunciar los números de turnos por voz, haga clic en el botón de abajo.
+    </p>
+    <button class="audio-btn" id="btn-activate-audio">Activar Sonido</button>
+  </div>
+
+  <header class="tv-header">
+    <div class="logo-container" style="margin-bottom: 0;">
+      <span class="logo-icon" id="tv-logo-placeholder" style="font-size: 3rem;">🥩</span>
+      <img id="tv-logo-img" style="display: none; height: 60px; max-width: 180px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(255,255,255,0.1)); margin-right: 10px;" />
+      <h1 id="tv-shop-name" style="font-size: 3.2rem;">Cargando...</h1>
+    </div>
+    <div class="tv-time" id="tv-clock">00:00:00</div>
+  </header>
+
+  <main class="glass-card big-display">
+    <div class="big-display-numbers">
+      <div class="now-serving-banner">Ahora Atendiendo</div>
+      <div class="huge-number" id="huge-serving-number">0</div>
+    </div>
+  </main>
+
+  <!-- History bar for TV screen -->
+  <div class="history-section" style="max-width: 100%; width: 100%; display: flex; flex-direction: column;">
+    <div class="history-title" style="font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center;">
+      <span>Llamados Anteriores</span>
+      <span style="font-size: 0.85rem; color: var(--accent-gold); text-transform: none;" id="sound-indicator">Audio Inactivo 🔇</span>
+    </div>
+    <ul class="history-list" id="tv-history-list" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+      <li style="text-align: center; color: var(--text-muted); grid-column: span 4; padding: 1rem 0;">Esperando llamados...</li>
+    </ul>
+  </div>
+
+  <script src="js/pantalla.js"></script>
+</body>
+</html>

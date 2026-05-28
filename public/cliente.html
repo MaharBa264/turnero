@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Turno - Cliente Móvil</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="logo-container" id="logo-wrapper">
+      <span class="logo-icon" id="logo-placeholder">🥩</span>
+      <img id="logo-img" style="display: none; height: 50px; max-width: 150px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(255,255,255,0.1));" />
+      <h1 id="shop-name">Cargando...</h1>
+    </div>
+    <p>Turnos desde el celular</p>
+  </header>
+
+  <!-- Banner Publicitario Superior -->
+  <div class="ad-banner-top" id="ad-top">
+    <span>Publicidad Disponible</span>
+  </div>
+
+  <main class="glass-card" style="max-width: 450px;">
+    <!-- Queue overview (always visible) -->
+    <div class="queue-status-grid">
+      <div class="status-box">
+        <span class="status-label">Atendiendo</span>
+        <span class="status-number active" id="current-serving">-</span>
+      </div>
+      <div class="status-box">
+        <span class="status-label">En Espera</span>
+        <span class="status-number" id="total-waiting">-</span>
+      </div>
+    </div>
+
+    <!-- View A: Request Ticket (Shown when user has no active ticket) -->
+    <div id="view-request-ticket" class="animation-fade">
+      <p style="color: var(--text-muted); margin-bottom: 2rem; line-height: 1.5;">
+        Sacá tu número digital y disfrutá tu tiempo libre haciendo otras compras. Te avisaremos cuando sea tu turno.
+      </p>
+      
+      <!-- Geolocation permission info -->
+      <div id="geo-info" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem; text-align: left; background: rgba(255,255,255,0.02); padding: 0.75rem; border-radius: 8px;">
+        📍 <em>Solicitaremos tu ubicación para calcular la distancia al comercio y avisarte si estás lejos del local.</em>
+      </div>
+
+      <button class="btn btn-gold" id="btn-take-turn">🥩 SACAR TURNO</button>
+    </div>
+
+    <!-- View B: My Ticket Details (Shown when user has an active ticket) -->
+    <div id="view-my-ticket" class="animation-fade" style="display: none;">
+      <div class="my-ticket-card">
+        <div class="my-ticket-title">Tu Número de Turno</div>
+        <div class="my-ticket-number" id="my-ticket-num">-</div>
+      </div>
+
+      <!-- Distance and Travel Time Info (Dynamic) -->
+      <div id="distance-info" style="display: none; margin: 1rem 0; font-size: 0.85rem; background: rgba(255,255,255,0.03); border-radius: 12px; padding: 0.75rem; border: 1px solid rgba(255,255,255,0.05);">
+        🗺️ Distancia al local: <strong id="val-distance">-</strong><br>
+        🚶 Tiempo de regreso: <strong id="val-travel-time">-</strong>
+      </div>
+
+      <!-- Live status alert message -->
+      <div class="status-alert wait" id="ticket-status-alert">
+        Cargando estado del turno...
+      </div>
+
+      <!-- Notification simulation configuration -->
+      <div style="margin: 1.5rem 0; text-align: left; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
+        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; color: var(--text-main); font-size: 0.9rem; text-transform: none; letter-spacing: 0;">
+          <input type="checkbox" id="chk-notify" style="width: auto;" checked>
+          <span>Alertas automáticas activadas</span>
+        </label>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.3;">
+          💡 <em>Te enviaremos notificaciones de navegador y vibraciones cuando falte el tiempo estimado de viaje para tu turno o cuando alcances el límite de seguridad.</em>
+        </p>
+      </div>
+
+      <button class="btn btn-secondary" id="btn-cancel-turn" style="margin-top: 0.5rem;">Abandonar Turno</button>
+    </div>
+  </main>
+
+  <!-- Banner Publicitario Inferior -->
+  <div class="ad-banner-bottom" id="ad-bottom">
+    <span>Publicidad Disponible</span>
+  </div>
+
+  <footer style="margin-top: 2rem; text-align: center; padding-bottom: 2rem;">
+    <a href="index.html" style="color: var(--accent-gold); text-decoration: none; font-size: 0.9rem;">← Volver al menú principal</a>
+  </footer>
+
+  <script src="js/cliente.js"></script>
+</body>
+</html>
