@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, combine, min as time_min
+from datetime import datetime, time
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import and_
@@ -13,7 +13,7 @@ class AnalyticsService:
         Retorna 180 segundos (3 minutos) por defecto si no hay suficientes datos del día.
         """
         today = datetime.utcnow().date()
-        start_of_day = combine(today, time_min)
+        start_of_day = datetime.combine(today, time.min)
 
         # Obtener los últimos 6 turnos llamados/atendidos hoy en orden cronológico de llamado
         # Necesitamos 6 turnos para poder calcular 5 deltas de tiempo consecutivos
@@ -58,7 +58,7 @@ class AnalyticsService:
         para un turno específico en base al número de personas adelante.
         """
         today = datetime.utcnow().date()
-        start_of_day = combine(today, time_min)
+        start_of_day = datetime.combine(today, time.min)
 
         # Contar cuántos turnos activos de hoy están antes en la cola (status 'espera' y número menor)
         stmt_ahead = select(Turno).filter(
