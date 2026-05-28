@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: turnero_backend_app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persistencia para la base de datos SQLite
+      - ./data:/app/data
+      # Montar estáticos si queremos que el contenedor los sirva directamente
+      - ./public:/app/public
+    environment:
+      - PROJECT_NAME=SaaS Queue System
+      - API_V1_STR=/api
+      # Modificar URL de DB para que escriba en el directorio del volumen persistente
+      - DATABASE_URL=sqlite+aiosqlite:////app/data/database.db
+      # Llave secreta en producción
+      - SECRET_KEY=PROD_SUPER_SECRET_JWT_KEY_EL_PUNTANO_SAAS_898234
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=10080
